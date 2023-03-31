@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: itunes-api-fetch-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: itunes-api-fetch
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: itunes-api-fetch
+  name: cp-itunes-api-fetch
+spec:
+  type: ClusterIP
+  selector:
+    app: itunes-api-fetch
+  ports: 
+  - name: httpport
+    port: 3000
+  - name: dbport
+    port: 3306

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: itunes-api-fetch
+  labels:
+    app: itunes-api-fetch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: itunes-api-fetch
+  template:
+    metadata:
+      labels:
+        app: itunes-api-fetch
+    spec:
+      containers:
+      - name: itunes-api-fetch-cont
+        image: azionz/itunes-api-fetch:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        env:
+        - name: ADR
+          valueFrom:
+            secretKeyRef:
+              name: itunes-api-fetch-secret
+              key: address
+              optional: false
+        - name: USR
+          valueFrom:
+            secretKeyRef:
+              name: itunes-api-fetch-secret
+              key: username
+              optional: false
+        - name: PSWD
+          valueFrom:
+            secretKeyRef:
+              name: itunes-api-fetch-secret
+              key: password
+              optional: false
